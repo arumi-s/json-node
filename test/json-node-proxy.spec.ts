@@ -1,7 +1,10 @@
 import { parse } from './doc';
 import { InternalSymbol, proxify } from '../src/JsonNodeProxy';
 import { findFirst, fromJson, isNode } from '../src/JsonNode';
-import { isProxy } from 'util/types';
+
+function isProxy(value: any) {
+	return Reflect.has(value as object, InternalSymbol);
+}
 
 describe('JsonNodeProxy check interface', () => {
 	const doc = parse(`<html id="root">
