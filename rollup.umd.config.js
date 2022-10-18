@@ -35,6 +35,6 @@ function config({ minify, input, name, outputName, ext = 'js' }) {
 export default [
 	{ input: 'index', name: 'umd', outputName: 'JsonNode', minify: false },
 	{ input: 'index', name: 'umd', outputName: 'JsonNode', minify: true },
-	{ input: 'parseXML', name: 'umd', outputName: 'parseXML', minify: false },
-	{ input: 'parseXML', name: 'umd', outputName: 'parseXML', minify: true },
+	{ input: 'parse-xml/index', name: 'umd', outputName: 'parseXML', minify: false },
+	{ input: 'parse-xml/index', name: 'umd', outputName: 'parseXML', minify: true },
 ].map(config);

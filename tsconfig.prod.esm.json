@@ -6,5 +6,5 @@
 		"target": "ES2015",
 		"outDir": "dist/esm"
 	},
-	"exclude": ["dist", "node_modules", "sample", "**/*.spec.ts", "test/**", "src/parseXML.ts"]
+	"exclude": ["dist", "node_modules", "sample", "**/*.spec.ts", "test/**", "src/parse-xml/*.ts"]
 }

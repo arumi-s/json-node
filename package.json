@@ -1,6 +1,6 @@
 {
 	"name": "json-node",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"description": "xml parser and selector",
 	"author": "Arumi Sakura",
 	"license": "MIT",
@@ -16,28 +16,28 @@
 			"node": "./cjs/index.js",
 			"require": "./cjs/index.js",
 			"es2015": "./esm/index.js",
-			"default": "./esm5/index.js"
+			"default": "./esm/index.js"
 		},
-		"./parseXML": {
-			"types": "./types/parseXML.d.ts",
-			"node": "./cjs/parseXML.js",
-			"require": "./cjs/parseXML.js",
-			"es2015": "./esm/parseXML.js",
-			"default": "./esm5/parseXML.js"
+		"./parse-xml": {
+			"types": "./types/parse-xml/index.d.ts",
+			"node": "./cjs/parse-xml/index.js",
+			"require": "./cjs/parse-xml/index.js",
+			"es2015": "./esm/parse-xml/index.js",
+			"default": "./esm/parse-xml/index.js"
 		},
 		"./operators": {
 			"types": "./types/operators/index.d.ts",
 			"node": "./cjs/operators/index.js",
 			"require": "./cjs/operators/index.js",
 			"es2015": "./esm/operators/index.js",
-			"default": "./esm5/operators/index.js"
+			"default": "./esm/operators/index.js"
 		},
 		"./internal/*": {
 			"types": "./types/internal/*.d.ts",
 			"node": "./cjs/internal/*.js",
 			"require": "./cjs/internal/*.js",
 			"es2015": "./esm/internal/*.js",
-			"default": "./esm5/internal/*.js"
+			"default": "./esm/internal/*.js"
 		},
 		"./package.json": "./package.json"
 	},

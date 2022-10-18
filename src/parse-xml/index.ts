@@ -1,7 +1,7 @@
 import { decode, DecodingMode, EntityLevel } from 'entities';
-import { ParseXmlOptions, Node } from './internal/types';
-import { appendChild } from './internal/operators/appendChild';
-import { isNode } from './internal/operators/isNode';
+import { ParseXmlOptions, Node } from '../internal/types';
+import { appendChild } from '../internal/operators/appendChild';
+import { isNode } from '../internal/operators/isNode';
 
 interface XmlNode {
 	tagName: string;

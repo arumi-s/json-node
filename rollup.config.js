@@ -9,10 +9,8 @@ function config({ minify, input, name, ext = 'js' }) {
 	return {
 		input: `./src/${input}.ts`,
 		output: {
-			dir,
+			file: `${dir}/${input}${minifierSuffix}.${ext}`,
 			format: 'esm',
-			entryFileNames: `[name]${minifierSuffix}.${ext}`,
-			chunkFileNames: `[name]${minifierSuffix}.${ext}`,
 			minifyInternalExports: false,
 		},
 		plugins: [
@@ -34,8 +32,8 @@ function config({ minify, input, name, ext = 'js' }) {
 }
 
 export default [
-	{ input: 'parseXML', name: 'esm', minify: false },
-	{ input: 'parseXML', name: 'esm', minify: true },
-	{ input: 'parseXML', name: 'esm5', minify: false },
-	{ input: 'parseXML', name: 'esm5', minify: true },
+	{ input: 'parse-xml/index', name: 'esm', minify: false },
+	{ input: 'parse-xml/index', name: 'esm', minify: true },
+	{ input: 'parse-xml/index', name: 'esm5', minify: false },
+	{ input: 'parse-xml/index', name: 'esm5', minify: true },
 ].map(config);
