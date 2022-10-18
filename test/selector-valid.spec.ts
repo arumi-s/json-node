@@ -1,8 +1,9 @@
 import { getTestDoc } from './doc';
-import { JsonNode, Selector } from '../src';
+import { find, findFirst, getAttribute, hasAttribute, Node } from '../src';
+import { tokenize } from '../src/internal/selector/tokenizer';
 import { SelectorTest, validSelectors, TEST_QSA, TEST_FIND, scopedSelectors } from './selectors';
 
-function runValidSelectorTest(name: string, root: JsonNode.Node, selectors: SelectorTest[], testType: number, docType = 'xhtml') {
+function runValidSelectorTest(name: string, root: Node, selectors: SelectorTest[], testType: number, docType = 'xhtml') {
 	describe(`${name} valid selectors`, () => {
 		const nodeType = 'document';
 
@@ -16,7 +17,7 @@ function runValidSelectorTest(name: string, root: JsonNode.Node, selectors: Sele
 
 			if (!exclude.includes(nodeType) && !exclude.includes(docType) && !exclude.includes('nonamespace') && (s.testType ?? 0) & testType) {
 				it('tokenize ' + n + ': ' + JSON.stringify(q), () => {
-					const tokens = Selector.tokenize(q);
+					const tokens = tokenize(q);
 					expect(tokens).not.toBeUndefined();
 
 					let result = '';
@@ -32,34 +33,34 @@ function runValidSelectorTest(name: string, root: JsonNode.Node, selectors: Sele
 					expect(result).toStrictEqual(q);
 				});
 
-				const refNode = (ctx ? JsonNode.findFirst(root, ctx) : root)!;
+				const refNode = (ctx ? findFirst(root, ctx) : root)!;
 
 				it('has context', () => {
 					expect(refNode).not.toBeUndefined();
 				});
 
-				let foundall: JsonNode.Node[] = [];
+				let foundall: Node[] = [];
 
 				it('find ' + n + ': ' + JSON.stringify(q), () => {
-					foundall = JsonNode.find(refNode, q);
+					foundall = find(refNode, q);
 					expect(foundall).not.toBeUndefined();
 					expect(foundall).toHaveLength(e.length);
 
 					for (let k = 0; k < e.length; k++) {
 						expect(foundall[k]).not.toBeUndefined();
-						expect(JsonNode.getAttribute(foundall[k], 'id')).toStrictEqual(e[k]);
-						expect(JsonNode.hasAttribute(foundall[k], 'data-clone')).toBeFalsy();
+						expect(getAttribute(foundall[k], 'id')).toStrictEqual(e[k]);
+						expect(hasAttribute(foundall[k], 'data-clone')).toBeFalsy();
 					}
 				});
 
 				if (foundall && foundall.length > 0) {
 					test('findFirst ' + n + ': ' + JSON.stringify(q), () => {
-						const found = JsonNode.findFirst(refNode, q)!;
+						const found = findFirst(refNode, q)!;
 						if (e.length > 0) {
 							expect(found).not.toBeUndefined();
 							expect(found).toStrictEqual(foundall[0]);
-							expect(JsonNode.getAttribute(found, 'id')).toStrictEqual(e[0]);
-							expect(JsonNode.hasAttribute(found, 'data-clone')).toBeFalsy();
+							expect(getAttribute(found, 'id')).toStrictEqual(e[0]);
+							expect(hasAttribute(found, 'data-clone')).toBeFalsy();
 						} else {
 							expect(found).toBeUndefined();
 						}

@@ -18,11 +18,13 @@ jobs:
       - run: npm run test:ci
       - run: npm run build:cjs
       - run: npm run build:esm
+      - run: npm run build:esm5
+      - run: npm run build:esm-bundle
       - run: npm run build:umd
       - run: npm run build:types
-      - run: cp LICENSE build/LICENSE
-      - run: cp README.md build/README.md
-      - run: jq 'del(.devDependencies) | del(.scripts)' package.json > build/package.json
-      - run: npm publish ./build
+      - run: cp LICENSE dist/LICENSE
+      - run: cp README.md dist/README.md
+      - run: jq 'del(.devDependencies) | del(.scripts)' package.json > dist/package.json
+      - run: npm publish ./dist
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

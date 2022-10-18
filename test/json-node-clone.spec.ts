@@ -1,4 +1,4 @@
-import { cloneAttr, cloneNode, copyAttr, copyChild, createAttrsMap, findChild, findFirst, toJson } from '../src/JsonNode';
+import { cloneAttr, cloneNode, copyAttr, copyChild, createAttrsMap, findChild, findFirst, toJson } from '../src';
 import { getTestDoc, parse } from './doc';
 
 describe('JsonNode clone', () => {

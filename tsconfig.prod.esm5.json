@@ -1,7 +1,11 @@
 {
 	"extends": "./tsconfig.prod.json",
 	"compilerOptions": {
-		"module": "ES2015",
-		"target": "ES5"
-	}
+		"module": "ESNext",
+		"importHelpers": false,
+		"downlevelIteration": true,
+		"target": "ES5",
+		"outDir": "dist/esm5"
+	},
+	"exclude": ["dist", "node_modules", "sample", "**/*.spec.ts", "test/**", "src/parseXML.ts"]
 }

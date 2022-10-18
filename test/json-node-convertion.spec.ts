@@ -1,16 +1,16 @@
-import { JsonNode, XmlNode } from '../src';
+import { fromJson, NodeExport } from '../src';
 
 describe('JsonNode check convertion', () => {
-	it('fromTxml', () => {
-		const obj: Partial<XmlNode> = {
-			tagName: 'html',
-			attributes: [
-				{ name: 'id', value: 'root' },
-				{ name: 'lang', value: 'en' },
-			],
-			children: ['text'],
+	it('fromJson', () => {
+		const obj: Partial<NodeExport> = {
+			name: 'html',
+			attr: {
+				id: 'root',
+				lang: 'en',
+			},
+			child: ['text'],
 		};
-		const node = JsonNode.fromTxml(JSON.parse(JSON.stringify(obj)) as XmlNode)!;
+		const node = fromJson(JSON.parse(JSON.stringify(obj)) as NodeExport)!;
 
 		expect(node).toBeDefined();
 		expect(node.tagName).toStrictEqual('html');
@@ -18,9 +18,9 @@ describe('JsonNode check convertion', () => {
 		expect(node.children).toHaveLength(1);
 	});
 
-	it('fromTxml without tagName', () => {
-		const obj: Partial<XmlNode> = { attributes: [], children: ['text'] };
-		const node = JsonNode.fromTxml(JSON.parse(JSON.stringify(obj)) as XmlNode)!;
+	it('fromJson without tagName', () => {
+		const obj: Partial<NodeExport> = { attr: {}, child: ['text'] };
+		const node = fromJson(JSON.parse(JSON.stringify(obj)) as NodeExport)!;
 
 		expect(node).toBeDefined();
 		expect(node.tagName).toStrictEqual('');
@@ -28,9 +28,9 @@ describe('JsonNode check convertion', () => {
 		expect(node.children).toHaveLength(1);
 	});
 
-	it('fromTxml without attributes', () => {
-		const obj: Partial<XmlNode> = { tagName: 'html', children: ['text'] };
-		const node = JsonNode.fromTxml(JSON.parse(JSON.stringify(obj)) as XmlNode)!;
+	it('fromJson without attributes', () => {
+		const obj: Partial<NodeExport> = { name: 'html', child: ['text'] };
+		const node = fromJson(JSON.parse(JSON.stringify(obj)) as NodeExport)!;
 
 		expect(node).toBeDefined();
 		expect(node.tagName).toStrictEqual('html');
@@ -38,9 +38,9 @@ describe('JsonNode check convertion', () => {
 		expect(node.children).toHaveLength(1);
 	});
 
-	it('fromTxml without children', () => {
-		const obj: Partial<XmlNode> = { tagName: 'html', attributes: [] };
-		const node = JsonNode.fromTxml(JSON.parse(JSON.stringify(obj)) as XmlNode)!;
+	it('fromJson without children', () => {
+		const obj: Partial<NodeExport> = { name: 'html', attr: {} };
+		const node = fromJson(JSON.parse(JSON.stringify(obj)) as NodeExport)!;
 
 		expect(node).toBeDefined();
 		expect(node.tagName).toStrictEqual('html');

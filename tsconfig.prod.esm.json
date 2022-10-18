@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig.prod.json",
+	"compilerOptions": {
+		"module": "ESNext",
+		"importHelpers": false,
+		"target": "ES2015",
+		"outDir": "dist/esm"
+	},
+	"exclude": ["dist", "node_modules", "sample", "**/*.spec.ts", "test/**", "src/parseXML.ts"]
+}

@@ -1,59 +1,71 @@
 import { parse } from './doc';
-import { JsonNode } from '../src';
+import {
+	childNodes,
+	createNode,
+	findFirst,
+	getAttribute,
+	insertAfter,
+	insertBefore,
+	nextSibling,
+	previousSibling,
+	removeAttr,
+	removeAttribute,
+	setAttribute,
+} from '../src';
 
 describe('JsonNode check manipulation', () => {
 	it('setAttribute', () => {
 		const doc = parse(`<div id="attr-div1" class="attr-div" align="center" TiTle="Title Text"></div>`);
-		const node = JsonNode.findFirst(doc, '#attr-div1')!;
+		const node = findFirst(doc, '#attr-div1')!;
 
-		expect(JsonNode.getAttribute(node, 'align')).toStrictEqual('center');
-		expect(JsonNode.getAttribute(node, 'TiTle')).toStrictEqual('Title Text');
-		expect(JsonNode.getAttribute(node, 'title')).toBeUndefined();
-		expect(JsonNode.getAttribute(node, 'valign')).toBeUndefined();
+		expect(getAttribute(node, 'align')).toStrictEqual('center');
+		expect(getAttribute(node, 'TiTle')).toStrictEqual('Title Text');
+		expect(getAttribute(node, 'title')).toBeUndefined();
+		expect(getAttribute(node, 'valign')).toBeUndefined();
 
-		JsonNode.setAttribute(node, 'align', 'left');
-		JsonNode.setAttribute(node, 'valign', 'middle');
-		JsonNode.setAttribute(node, 'title', 'Other Title Text');
+		setAttribute(node, 'align', 'left');
+		setAttribute(node, 'valign', 'middle');
+		setAttribute(node, 'title', 'Other Title Text');
 
-		expect(JsonNode.getAttribute(node, 'align')).toStrictEqual('left');
-		expect(JsonNode.getAttribute(node, 'valign')).toStrictEqual('middle');
-		expect(JsonNode.getAttribute(node, 'TiTle')).toStrictEqual('Title Text');
-		expect(JsonNode.getAttribute(node, 'title')).toStrictEqual('Other Title Text');
+		expect(getAttribute(node, 'align')).toStrictEqual('left');
+		expect(getAttribute(node, 'valign')).toStrictEqual('middle');
+		expect(getAttribute(node, 'TiTle')).toStrictEqual('Title Text');
+		expect(getAttribute(node, 'title')).toStrictEqual('Other Title Text');
 	});
 
 	it('removeAttribute', () => {
 		const doc = parse(`<div id="attr-div1" class="attr-div" align="center" TiTle="Title Text"></div>`);
-		const node = JsonNode.findFirst(doc, '#attr-div1')!;
+		const node = findFirst(doc, '#attr-div1')!;
 
-		expect(JsonNode.getAttribute(node, 'align')).toStrictEqual('center');
-		expect(JsonNode.getAttribute(node, 'TiTle')).toStrictEqual('Title Text');
-		expect(JsonNode.getAttribute(node, 'title')).toBeUndefined();
+		expect(getAttribute(node, 'align')).toStrictEqual('center');
+		expect(getAttribute(node, 'TiTle')).toStrictEqual('Title Text');
+		expect(getAttribute(node, 'title')).toBeUndefined();
 
-		JsonNode.removeAttribute(node, 'align');
-		JsonNode.removeAttribute(node, 'title');
+		removeAttribute(node, 'align');
+		removeAttribute(node, 'title');
 
-		expect(JsonNode.getAttribute(node, 'align')).toBeUndefined();
-		expect(JsonNode.getAttribute(node, 'TiTle')).toStrictEqual('Title Text');
-		expect(JsonNode.getAttribute(node, 'title')).toBeUndefined();
+		expect(getAttribute(node, 'align')).toBeUndefined();
+		expect(getAttribute(node, 'TiTle')).toStrictEqual('Title Text');
+		expect(getAttribute(node, 'title')).toBeUndefined();
 	});
 
 	it('removeAttr', () => {
 		const doc = parse(`<div id="attr-div1" class="attr-div" align="center" AlIgn="left" TiTle="Title Text"></div>`);
-		const node = JsonNode.findFirst(doc, '#attr-div1')!;
+		const node = findFirst(doc, '#attr-div1')!;
 
-		expect(JsonNode.getAttribute(node, 'class')).toStrictEqual('attr-div');
-		expect(JsonNode.getAttribute(node, 'align')).toStrictEqual('center');
-		expect(JsonNode.getAttribute(node, 'AlIgn')).toStrictEqual('left');
-		expect(JsonNode.getAttribute(node, 'TiTle')).toStrictEqual('Title Text');
-		expect(JsonNode.getAttribute(node, 'title')).toBeUndefined();
+		expect(getAttribute(node, 'class')).toStrictEqual('attr-div');
+		expect(getAttribute(node, 'align')).toStrictEqual('center');
+		expect(getAttribute(node, 'AlIgn')).toStrictEqual('left');
+		expect(getAttribute(node, 'TiTle')).toStrictEqual('Title Text');
+		expect(getAttribute(node, 'title')).toBeUndefined();
 
-		JsonNode.removeAttr(node, ['align']);
+		removeAttr(node, ['align']);
 
-		expect(JsonNode.getAttribute(node, 'class')).toBeUndefined();
-		expect(JsonNode.getAttribute(node, 'align')).toStrictEqual('center');
-		expect(JsonNode.getAttribute(node, 'AlIgn')).toBeUndefined();
-		expect(JsonNode.getAttribute(node, 'TiTle')).toBeUndefined();
-		expect(JsonNode.getAttribute(node, 'title')).toBeUndefined();
+		expect(getAttribute(node, 'class')).toBeUndefined();
+		expect(getAttribute(node, 'align')).toStrictEqual('center');
+		expect(getAttribute(node, 'AlIgn')).toBeUndefined();
+		expect(getAttribute(node, 'TiTle')).toBeUndefined();
+		expect(getAttribute(node, 'title')).toBeUndefined();
 	});
 
 	it('insertAfter with new node', () => {
@@ -69,23 +81,23 @@ describe('JsonNode check manipulation', () => {
 `);
 
 		const newId = 'universal-insert1';
-		const parentNode = JsonNode.findFirst(doc, '#universal')!;
-		const refNode = JsonNode.findFirst(doc, '#universal-p2')!;
-		const newNode = JsonNode.createNode('div', { id: newId });
+		const parentNode = findFirst(doc, '#universal')!;
+		const refNode = findFirst(doc, '#universal-p2')!;
+		const newNode = createNode('div', { id: newId });
 
-		expect(JsonNode.childNodes(parentNode)).toHaveLength(5);
-		expect(JsonNode.findFirst(doc, `#${newId}`)).toBeUndefined();
+		expect(childNodes(parentNode)).toHaveLength(5);
+		expect(findFirst(doc, `#${newId}`)).toBeUndefined();
 
-		JsonNode.insertAfter(parentNode, newNode, refNode);
+		insertAfter(parentNode, newNode, refNode);
 
-		expect(JsonNode.childNodes(parentNode)).toHaveLength(6);
+		expect(childNodes(parentNode)).toHaveLength(6);
 
-		const foundNode = JsonNode.findFirst(doc, `#${newId}`)!;
+		const foundNode = findFirst(doc, `#${newId}`)!;
 		expect(foundNode).toBeDefined();
 		expect(foundNode).toStrictEqual(newNode);
 		expect(parentNode.children).toContain(newNode);
 		expect(newNode.parent).toStrictEqual(parentNode);
-		expect(JsonNode.previousSibling(foundNode)).toStrictEqual(refNode);
+		expect(previousSibling(foundNode)).toStrictEqual(refNode);
 	});
 
 	it('insertAfter with existing node', () => {
@@ -103,26 +115,26 @@ describe('JsonNode check manipulation', () => {
 </html>
 `);
 
-		const parentNode = JsonNode.findFirst(doc, '#universal')!;
-		const refNode = JsonNode.findFirst(doc, '#universal-p2')!;
+		const parentNode = findFirst(doc, '#universal')!;
+		const refNode = findFirst(doc, '#universal-p2')!;
 
-		expect(JsonNode.childNodes(parentNode)).toHaveLength(5);
+		expect(childNodes(parentNode)).toHaveLength(5);
 
-		const extParentNode = JsonNode.findFirst(doc, '#external')!;
-		const extNode = JsonNode.findFirst(doc, '#external-p1')!;
+		const extParentNode = findFirst(doc, '#external')!;
+		const extNode = findFirst(doc, '#external-p1')!;
 		expect(extNode.parent).toStrictEqual(extParentNode);
 
-		JsonNode.insertAfter(parentNode, extNode, refNode);
+		insertAfter(parentNode, extNode, refNode);
 
-		expect(JsonNode.childNodes(parentNode)).toHaveLength(6);
+		expect(childNodes(parentNode)).toHaveLength(6);
 
-		const foundNode2 = JsonNode.findFirst(doc, `#external-p1`)!;
+		const foundNode2 = findFirst(doc, `#external-p1`)!;
 		expect(foundNode2).toBeDefined();
 		expect(foundNode2).toStrictEqual(extNode);
 		expect(extParentNode.children).not.toContain(extNode);
 		expect(parentNode.children).toContain(extNode);
 		expect(extNode.parent).toStrictEqual(parentNode);
-		expect(JsonNode.previousSibling(foundNode2)).toStrictEqual(refNode);
+		expect(previousSibling(foundNode2)).toStrictEqual(refNode);
 	});
 
 	it('insertBefore with new node', () => {
@@ -138,23 +150,23 @@ describe('JsonNode check manipulation', () => {
 `);
 
 		const newId = 'universal-insert1';
-		const parentNode = JsonNode.findFirst(doc, '#universal')!;
-		const refNode = JsonNode.findFirst(doc, '#universal-p2')!;
-		const newNode = JsonNode.createNode('div', { id: newId });
+		const parentNode = findFirst(doc, '#universal')!;
+		const refNode = findFirst(doc, '#universal-p2')!;
+		const newNode = createNode('div', { id: newId });
 
-		expect(JsonNode.childNodes(parentNode)).toHaveLength(5);
-		expect(JsonNode.findFirst(doc, `#${newId}`)).toBeUndefined();
+		expect(childNodes(parentNode)).toHaveLength(5);
+		expect(findFirst(doc, `#${newId}`)).toBeUndefined();
 
-		JsonNode.insertBefore(parentNode, newNode, refNode);
+		insertBefore(parentNode, newNode, refNode);
 
-		expect(JsonNode.childNodes(parentNode)).toHaveLength(6);
+		expect(childNodes(parentNode)).toHaveLength(6);
 
-		const foundNode = JsonNode.findFirst(doc, `#${newId}`)!;
+		const foundNode = findFirst(doc, `#${newId}`)!;
 		expect(foundNode).toBeDefined();
 		expect(foundNode).toStrictEqual(newNode);
 		expect(parentNode.children).toContain(newNode);
 		expect(newNode.parent).toStrictEqual(parentNode);
-		expect(JsonNode.nextSibling(foundNode)).toStrictEqual(refNode);
+		expect(nextSibling(foundNode)).toStrictEqual(refNode);
 	});
 
 	it('insertBefore with existing node', () => {
@@ -172,25 +184,25 @@ describe('JsonNode check manipulation', () => {
 </html>
 `);
 
-		const parentNode = JsonNode.findFirst(doc, '#universal')!;
-		const refNode = JsonNode.findFirst(doc, '#universal-p2')!;
+		const parentNode = findFirst(doc, '#universal')!;
+		const refNode = findFirst(doc, '#universal-p2')!;
 
-		expect(JsonNode.childNodes(parentNode)).toHaveLength(5);
+		expect(childNodes(parentNode)).toHaveLength(5);
 
-		const extParentNode = JsonNode.findFirst(doc, '#external')!;
-		const extNode = JsonNode.findFirst(doc, '#external-p1')!;
+		const extParentNode = findFirst(doc, '#external')!;
+		const extNode = findFirst(doc, '#external-p1')!;
 		expect(extNode.parent).toStrictEqual(extParentNode);
 
-		JsonNode.insertBefore(parentNode, extNode, refNode);
+		insertBefore(parentNode, extNode, refNode);
 
-		expect(JsonNode.childNodes(parentNode)).toHaveLength(6);
+		expect(childNodes(parentNode)).toHaveLength(6);
 
-		const foundNode2 = JsonNode.findFirst(doc, `#external-p1`)!;
+		const foundNode2 = findFirst(doc, `#external-p1`)!;
 		expect(foundNode2).toBeDefined();
 		expect(foundNode2).toStrictEqual(extNode);
 		expect(extParentNode.children).not.toContain(extNode);
 		expect(parentNode.children).toContain(extNode);
 		expect(extNode.parent).toStrictEqual(parentNode);
-		expect(JsonNode.nextSibling(foundNode2)).toStrictEqual(refNode);
+		expect(nextSibling(foundNode2)).toStrictEqual(refNode);
 	});
 });

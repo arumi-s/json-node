@@ -1,4 +1,13 @@
-import { isDigit, isHex, isIdentChar, isIdentStart, isReplacer, isSpace, isUnicode, isUnicodeStrict } from '../src/selector/tokens';
+import {
+	isDigit,
+	isHex,
+	isIdentChar,
+	isIdentStart,
+	isReplacer,
+	isSpace,
+	isUnicode,
+	isUnicodeStrict,
+} from '../src/internal/selector/tokens';
 
 function checkCodes(name: string, fn: (code: number) => boolean, expects: string) {
 	it(`${name}`, () => {

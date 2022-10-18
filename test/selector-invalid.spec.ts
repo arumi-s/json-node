@@ -1,12 +1,12 @@
 import { getTestDoc } from './doc';
-import { JsonNode } from '../src';
+import { Node, find, findFirst } from '../src';
 import { SelectorTest, invalidSelectors } from './selectors';
 
 function escapeRegex(text: string) {
 	return text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
-function runInvalidSelectorTest(name: string, root: JsonNode.Node, selectors: SelectorTest[]) {
+function runInvalidSelectorTest(name: string, root: Node, selectors: SelectorTest[]) {
 	describe(`${name} invalid selectors`, () => {
 		for (let i = 0; i < selectors.length; i++) {
 			const s = selectors[i];
@@ -21,13 +21,13 @@ function runInvalidSelectorTest(name: string, root: JsonNode.Node, selectors: Se
 				: null;
 
 			it('findFirst ' + n + ': ' + JSON.stringify(q), () => {
-				const f = () => JsonNode.findFirst(root, q);
+				const f = () => findFirst(root, q);
 				expect(f).toThrow(SyntaxError);
 				if (messageRegex) expect(f).toThrow(messageRegex);
 			});
 
 			it('find ' + n + ': ' + JSON.stringify(q), () => {
-				const f = () => JsonNode.find(root, q);
+				const f = () => find(root, q);
 				expect(f).toThrow(SyntaxError);
 				if (messageRegex) expect(f).toThrow(messageRegex);
 			});

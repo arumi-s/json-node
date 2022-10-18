@@ -1,8 +1,8 @@
 import { getTestDoc } from './doc';
-import { JsonNode } from '../src';
+import { find, findChild, findChildren, fromJson, isNode, toJson } from '../src';
 
 describe('JsonNode check interface', () => {
-	const root = JsonNode.findChild(getTestDoc(), ':root')!;
+	const root = findChild(getTestDoc(), ':root')!;
 
 	it('has property tagName', () => {
 		expect(root).toHaveProperty('tagName');
@@ -20,28 +20,28 @@ describe('JsonNode check interface', () => {
 	});
 
 	it('find returns an array of nodes', () => {
-		const nodes = JsonNode.find(root, 'div');
+		const nodes = find(root, 'div');
 		expect(Array.isArray(nodes)).toBeTruthy();
 		for (const childNode of nodes) {
-			expect(JsonNode.isNode(childNode)).toBeTruthy();
+			expect(isNode(childNode)).toBeTruthy();
 		}
 	});
 
 	it('findChildren returns an array of child nodes', () => {
-		const nodes = JsonNode.findChildren(root, 'div');
+		const nodes = findChildren(root, 'div');
 		expect(Array.isArray(nodes)).toBeTruthy();
 		for (const childNode of nodes) {
-			expect(JsonNode.isNode(childNode)).toBeTruthy();
+			expect(isNode(childNode)).toBeTruthy();
 			expect(childNode.parent).toStrictEqual(root);
 		}
 	});
 
 	it('converts to json', () => {
-		const json = JsonNode.toJson(root);
+		const json = toJson(root);
 		expect(json).toBeDefined();
 
-		const back = JsonNode.fromJson(json);
+		const back = fromJson(json);
 		expect(json).toBeDefined();
-		expect(JsonNode.toJson(back)).toStrictEqual(json);
+		expect(toJson(back)).toStrictEqual(json);
 	});
 });

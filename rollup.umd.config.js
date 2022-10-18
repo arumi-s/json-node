@@ -3,13 +3,13 @@ import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
 
-function config({ minify, input, name, ext = 'js' }) {
-	const dir = `build/umd`;
+function config({ minify, input, name, outputName, ext = 'js' }) {
+	const dir = `dist/umd`;
 	const minifierSuffix = minify ? '.min' : '';
 	return {
 		input: `./src/${input}.ts`,
 		output: {
-			name: 'JsonNode',
+			name: outputName,
 			file: `${dir}/${input}${minifierSuffix}.${ext}`,
 			format: 'umd',
 			sourcemap: true,
@@ -33,6 +33,8 @@ function config({ minify, input, name, ext = 'js' }) {
 }
 
 export default [
-	{ input: 'index', name: 'umd', minify: false },
-	{ input: 'index', name: 'umd', minify: true },
+	{ input: 'index', name: 'umd', outputName: 'JsonNode', minify: false },
+	{ input: 'index', name: 'umd', outputName: 'JsonNode', minify: true },
+	{ input: 'parseXML', name: 'umd', outputName: 'parseXML', minify: false },
+	{ input: 'parseXML', name: 'umd', outputName: 'parseXML', minify: true },
 ].map(config);

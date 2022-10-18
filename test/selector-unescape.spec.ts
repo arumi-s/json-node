@@ -1,5 +1,5 @@
 import { Selector } from '../src';
-import { unescape } from '../src/selector/unescape';
+import { unescape } from '../src/internal/selector/unescape';
 import { escapeSelectors } from './selectors';
 
 describe('Selector check unescape', () => {

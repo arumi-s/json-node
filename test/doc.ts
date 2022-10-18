@@ -1,13 +1,14 @@
 import fs from 'fs';
 import path from 'path';
-import { JsonNode, parseXML } from '../src';
+import { Node } from '../src';
+import { parseXML } from '../src/parseXML';
 
 const testXml = fs.readFileSync(path.join(__dirname, 'doc.xml'), { encoding: 'utf8' });
 
-export function parse(text: string): JsonNode.Node {
-	return JsonNode.fromTxml(parseXML(text, { keepComments: true, keepDeclarations: true }))!;
+export function parse(text: string): Node {
+	return parseXML(text, { keepComments: true, keepDeclarations: true })!;
 }
 
-export function getTestDoc(): JsonNode.Node {
-	return JsonNode.fromTxml(parse(testXml))!;
+export function getTestDoc(): Node {
+	return parse(testXml)!;
 }
