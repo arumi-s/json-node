@@ -1,0 +1,8 @@
+{
+	"name": "json-node/parse-xml",
+	"types": "../types/parseXML.d.ts",
+	"main": "../cjs/parseXML.js",
+	"module": "../esm5/parseXML.js",
+	"es2015": "../esm/parseXML.js",
+	"sideEffects": false
+}

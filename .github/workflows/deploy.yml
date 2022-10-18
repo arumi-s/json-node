@@ -24,6 +24,10 @@ jobs:
       - run: npm run build:types
       - run: cp LICENSE dist/LICENSE
       - run: cp README.md dist/README.md
+      - run: mkdir dist/operators
+      - run: mkdir dist/parse-xml
+      - run: cp src/operators/package.json dist/operators/package.json
+      - run: cp src/parse-xml/package.json dist/parse-xml/package.json
       - run: jq 'del(.devDependencies) | del(.scripts)' package.json > dist/package.json
       - run: npm publish ./dist
         env:
