@@ -1,6 +1,7 @@
 export { createAttrs } from '../internal/constructors/createAttrs';
 export { createAttrsMap } from '../internal/constructors/createAttrsMap';
 export { createComment } from '../internal/constructors/createComment';
+export { createDocument } from '../internal/constructors/createDocument';
 export { createElement } from '../internal/constructors/createElement';
 export { createText } from '../internal/constructors/createText';
 
@@ -25,6 +26,7 @@ export { findChildren } from '../internal/operators/findChildren';
 export { findFirst } from '../internal/operators/findFirst';
 export { findParent } from '../internal/operators/findParent';
 export { findParents } from '../internal/operators/findParents';
+export { findRoot } from '../internal/operators/findRoot';
 export { firstChild } from '../internal/operators/firstChild';
 export { getAttribute } from '../internal/operators/getAttribute';
 export { hasAttribute } from '../internal/operators/hasAttribute';
@@ -34,6 +36,7 @@ export { insertAfter } from '../internal/operators/insertAfter';
 export { insertBefore } from '../internal/operators/insertBefore';
 export { isAny } from '../internal/operators/isAny';
 export { isComment } from '../internal/operators/isComment';
+export { isDocument } from '../internal/operators/isDocument';
 export { isElement } from '../internal/operators/isElement';
 export { isSelectable } from '../internal/operators/isSelectable';
 export { isText } from '../internal/operators/isText';

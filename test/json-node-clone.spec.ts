@@ -1,10 +1,10 @@
-import { cloneAttr, cloneNode, copyAttr, copyChild, createAttrsMap, findChild, findFirst, toJson } from '../src';
+import { cloneAttr, cloneNode, copyAttr, copyChild, createAttrsMap, findFirst, findRoot, toJson } from '../src/operators';
 import { getTestDoc, parse } from './doc';
 
-describe('JsonNode clone', () => {
+describe('JsonNode can clone', () => {
 	it('cloneNode shallow', () => {
 		const doc = getTestDoc();
-		const root = findChild(doc, ':root')!;
+		const root = findRoot(doc);
 		const clone = cloneNode(root);
 		expect(toJson(clone)).toStrictEqual(toJson({ ...root, children: [] }));
 		expect(clone).not.toBe(root);
@@ -12,7 +12,7 @@ describe('JsonNode clone', () => {
 
 	it('cloneNode deep', () => {
 		const doc = getTestDoc();
-		const root = findChild(doc, ':root')!;
+		const root = findRoot(doc);
 		const clone = cloneNode(root, true);
 		expect(toJson(clone)).toStrictEqual(toJson(root));
 		expect(clone).not.toBe(root);

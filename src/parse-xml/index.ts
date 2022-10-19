@@ -1,14 +1,17 @@
 import { decode, DecodingMode, EntityLevel } from 'entities';
-import { ParseXmlOptions, ElementNode, Attr, AnyNode } from '../internal/types';
+import { ParseXmlOptions, ElementNode, DocumentNode, Attr, ChildNode, ParentNode } from '../internal/types';
 import { _isElement } from '../internal/operators/_isElement';
 import { _isText } from '../internal/operators/_isText';
 import { createComment } from '../internal/constructors/createComment';
 import { createElement } from '../internal/constructors/createElement';
 import { createText } from '../internal/constructors/createText';
+import { createDocument } from '../operators';
 
-const decodeXML = (str: string): string => decode(str, { level: EntityLevel.HTML, mode: DecodingMode.Strict });
+function decodeXML(str: string): string {
+	return decode(str, { level: EntityLevel.HTML, mode: DecodingMode.Strict });
+}
 
-function toJsonNode(node: ElementNode): ElementNode {
+function toJsonNode<T extends ParentNode>(node: T): T {
 	if (node.children) {
 		node.children.forEach((child) => {
 			if (_isElement(child)) child = toJsonNode(child);
@@ -18,14 +21,13 @@ function toJsonNode(node: ElementNode): ElementNode {
 	return node;
 }
 
-const wrapXML = (tagName: string, children: AnyNode[]): ElementNode => ({
-	tagName,
-	attributes: [],
-	parent: null,
-	children,
-});
+function wrapXML(children: ChildNode[]): DocumentNode {
+	const doc = createDocument();
+	doc.children = children;
+	return doc;
+}
 
-export const parseXML = (S: string, options?: ParseXmlOptions): ElementNode => {
+export const parseXML = (S: string, options?: ParseXmlOptions): DocumentNode => {
 	options = options || {};
 
 	let position = options.position || 0;
@@ -45,8 +47,8 @@ export const parseXML = (S: string, options?: ParseXmlOptions): ElementNode => {
 	/**
 	 * parsing a list of entries
 	 */
-	const parseChildren = (tagName: string): AnyNode[] => {
-		const children: AnyNode[] = [];
+	const parseChildren = (tagName: string): ChildNode[] => {
+		const children: ChildNode[] = [];
 		while (S[position]) {
 			if (S.charCodeAt(position) === openBracketCC) {
 				if (S.charCodeAt(position + 1) === slashCC) {
@@ -170,7 +172,7 @@ export const parseXML = (S: string, options?: ParseXmlOptions): ElementNode => {
 		position++;
 		const tagName = parseName();
 		const attributes: Attr[] = [];
-		let children: AnyNode[] = [];
+		let children: ChildNode[] = [];
 
 		// parsing attributes
 		while (S.charCodeAt(position) !== closeBracketCC && S[position]) {
@@ -260,5 +262,5 @@ export const parseXML = (S: string, options?: ParseXmlOptions): ElementNode => {
 
 	const out = parseChildren('');
 
-	return toJsonNode(wrapXML('', out));
+	return toJsonNode(wrapXML(out));
 };

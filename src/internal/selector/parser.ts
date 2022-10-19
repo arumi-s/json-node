@@ -38,6 +38,7 @@ import {
 	TOKEN_DOT,
 	TOKEN_ASTERISK,
 } from './tokens';
+import { isDocument } from '../operators/isDocument';
 
 export function parseTokens(tokens: Token[]): Checker {
 	const groupedCheckers: Checker[] = [];
@@ -117,7 +118,7 @@ export function parseTokens(tokens: Token[]): Checker {
 			if (nameToken) {
 				const pseudoName = nameToken.text;
 				if (pseudoName === 'root') {
-					checkers.push((node) => node.parent == null || node.parent.tagName === '');
+					checkers.push((node) => node.parent == null || isDocument(node.parent));
 					continue;
 				} else if (pseudoName === 'scope') {
 					checkers.push((node, scope) => node === scope);

@@ -1,6 +1,6 @@
-import { AnyNode, ElementNode } from '../types';
+import { ChildNode, ParentNode } from '../types';
 
-export function removeChild(node: ElementNode, child: AnyNode) {
+export function removeChild(node: ParentNode, child: ChildNode) {
 	if (node !== child) {
 		const index = node.children.indexOf(child);
 		if (index >= 0) node.children.splice(index, 1);

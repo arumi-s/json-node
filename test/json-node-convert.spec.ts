@@ -1,6 +1,6 @@
 import { fromJson, NodeExport } from '../src';
 
-describe('JsonNode check convertion', () => {
+describe('JsonNode can convert', () => {
 	it('fromJson', () => {
 		const obj: Partial<NodeExport> = {
 			name: 'html',

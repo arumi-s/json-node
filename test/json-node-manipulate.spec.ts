@@ -13,7 +13,7 @@ import {
 	setAttribute,
 } from '../src';
 
-describe('JsonNode check manipulation', () => {
+describe('JsonNode can manipulate', () => {
 	it('setAttribute', () => {
 		const doc = parse(`<div id="attr-div1" class="attr-div" align="center" TiTle="Title Text"></div>`);
 		const node = findFirst(doc, '#attr-div1')!;

@@ -11,7 +11,7 @@ export function fromJson(json: NodeExport): ElementNode {
 			appendChild(
 				node,
 				typeof child === 'string'
-					? child.startsWith('<!--') && child.endsWith('-->')
+					? child.startsWith('<!--') && child.endsWith('>')
 						? createComment(child)
 						: createText(child)
 					: fromJson(child),

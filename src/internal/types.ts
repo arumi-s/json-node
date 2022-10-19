@@ -1,23 +1,34 @@
 export interface ElementNode {
 	tagName: string;
 	attributes: Attr[];
-	parent: ElementNode | null;
-	children: AnyNode[];
+	parent: ParentNode | null;
+	children: ChildNode[];
 }
 
 export interface TextNode {
 	tagName: '#text';
-	parent: ElementNode | null;
+	parent: ParentNode | null;
 	text: string;
 }
 
 export interface CommentNode {
 	tagName: '#comment';
-	parent: ElementNode | null;
+	parent: ParentNode | null;
 	text: string;
 }
 
-export type AnyNode = ElementNode | TextNode | CommentNode;
+export interface DocumentNode {
+	tagName: '#document';
+	attributes: Attr[];
+	parent: null;
+	children: ChildNode[];
+}
+
+export type ParentNode = DocumentNode | ElementNode;
+
+export type ChildNode = ElementNode | TextNode | CommentNode;
+
+export type AnyNode = DocumentNode | ElementNode | TextNode | CommentNode;
 
 export interface NodeExport {
 	name?: string;
@@ -39,4 +50,4 @@ export interface ParseXmlOptions {
 
 export type AttrsMap = Record<string, string>;
 
-export type Checker = (node: ElementNode, scope: ElementNode) => boolean;
+export type Checker = (node: ParentNode, scope: ParentNode) => boolean;
