@@ -1,10 +1,12 @@
-import { Node, NodeExport } from '../types';
+import { ElementNode, NodeExport } from '../types';
 import { createAttrsMap } from '../constructors/createAttrsMap';
-import { _isNodeInternal } from '../operators/isNodeInternal';
+import { _isElement } from '../operators/_isElement';
 
-export function toJson(node: Node): NodeExport {
+export function toJson(node: ElementNode): NodeExport {
 	const result: NodeExport = { name: node.tagName };
 	if (node.attributes.length) result.attr = createAttrsMap(node.attributes);
-	if (node.children.length) result.child = node.children.map((child) => (_isNodeInternal(child) ? toJson(child) : child));
+	if (node.children.length) {
+		result.child = node.children.map((child) => (_isElement(child) ? toJson(child) : child.text));
+	}
 	return result;
 }

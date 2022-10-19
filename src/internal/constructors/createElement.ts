@@ -1,7 +1,7 @@
-import { AttrsMap, Node } from '../types';
+import { AttrsMap, ElementNode } from '../types';
 import { createAttrs } from './createAttrs';
 
-export function createNode(tagName: string = '', attrsMap?: AttrsMap): Node {
+export function createElement(tagName: string = '', attrsMap?: AttrsMap): ElementNode {
 	return {
 		tagName,
 		attributes: createAttrs(attrsMap),

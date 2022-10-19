@@ -1,9 +1,9 @@
 import { getTestDoc } from './doc';
-import { find, findFirst, getAttribute, hasAttribute, Node } from '../src';
+import { find, findFirst, getAttribute, hasAttribute, ElementNode } from '../src';
 import { tokenize } from '../src/internal/selector/tokenizer';
 import { SelectorTest, validSelectors, TEST_QSA, TEST_FIND, scopedSelectors } from './selectors';
 
-function runValidSelectorTest(name: string, root: Node, selectors: SelectorTest[], testType: number, docType = 'xhtml') {
+function runValidSelectorTest(name: string, root: ElementNode, selectors: SelectorTest[], testType: number, docType = 'xhtml') {
 	describe(`${name} valid selectors`, () => {
 		const nodeType = 'document';
 
@@ -39,7 +39,7 @@ function runValidSelectorTest(name: string, root: Node, selectors: SelectorTest[
 					expect(refNode).not.toBeUndefined();
 				});
 
-				let foundall: Node[] = [];
+				let foundall: ElementNode[] = [];
 
 				it('find ' + n + ': ' + JSON.stringify(q), () => {
 					foundall = find(refNode, q);

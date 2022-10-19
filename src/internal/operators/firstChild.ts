@@ -1,6 +1,6 @@
-import { Node } from '../types';
-import { isSelectableNode } from './isSelectableNode';
+import { ElementNode } from '../types';
+import { isSelectable } from './isSelectable';
 
-export function firstChild(node: Node) {
-	return node.children.find(isSelectableNode);
+export function firstChild(node: ElementNode) {
+	return node.children.find(isSelectable);
 }

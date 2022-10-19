@@ -1,9 +1,23 @@
-export interface Node {
+export interface ElementNode {
 	tagName: string;
 	attributes: Attr[];
-	parent: Node | null;
-	children: (Node | string)[];
+	parent: ElementNode | null;
+	children: AnyNode[];
 }
+
+export interface TextNode {
+	tagName: '#text';
+	parent: ElementNode | null;
+	text: string;
+}
+
+export interface CommentNode {
+	tagName: '#comment';
+	parent: ElementNode | null;
+	text: string;
+}
+
+export type AnyNode = ElementNode | TextNode | CommentNode;
 
 export interface NodeExport {
 	name?: string;
@@ -25,4 +39,4 @@ export interface ParseXmlOptions {
 
 export type AttrsMap = Record<string, string>;
 
-export type Checker = (node: Node, scope: Node) => boolean;
+export type Checker = (node: ElementNode, scope: ElementNode) => boolean;

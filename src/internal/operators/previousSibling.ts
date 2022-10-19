@@ -1,7 +1,7 @@
-import { Node } from '../types';
+import { ElementNode } from '../types';
 import { childNodes } from './childNodes';
 
-export function previousSibling(node: Node) {
+export function previousSibling(node: ElementNode) {
 	if (node.parent == null) return null;
 	const siblingNodes = childNodes(node.parent);
 	const nodeIndex = siblingNodes.indexOf(node);

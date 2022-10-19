@@ -1,7 +1,7 @@
-import { Node } from '../types';
+import { ElementNode } from '../types';
 import { removeChild } from './removeChild';
 
-export function insertAfter(node: Node, child: Node, ref: Node) {
+export function insertAfter(node: ElementNode, child: ElementNode, ref: ElementNode) {
 	if (node !== child && child !== ref && ref.parent === node) {
 		if (child.parent) removeChild(child.parent, child);
 		child.parent = node;

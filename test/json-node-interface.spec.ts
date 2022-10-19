@@ -1,5 +1,5 @@
 import { getTestDoc } from './doc';
-import { find, findChild, findChildren, fromJson, isNode, toJson } from '../src';
+import { find, findChild, findChildren, findFirst, fromJson, isElement, textContent, toJson } from '../src';
 
 describe('JsonNode check interface', () => {
 	const root = findChild(getTestDoc(), ':root')!;
@@ -23,7 +23,7 @@ describe('JsonNode check interface', () => {
 		const nodes = find(root, 'div');
 		expect(Array.isArray(nodes)).toBeTruthy();
 		for (const childNode of nodes) {
-			expect(isNode(childNode)).toBeTruthy();
+			expect(isElement(childNode)).toBeTruthy();
 		}
 	});
 
@@ -31,9 +31,19 @@ describe('JsonNode check interface', () => {
 		const nodes = findChildren(root, 'div');
 		expect(Array.isArray(nodes)).toBeTruthy();
 		for (const childNode of nodes) {
-			expect(isNode(childNode)).toBeTruthy();
+			expect(isElement(childNode)).toBeTruthy();
 			expect(childNode.parent).toStrictEqual(root);
 		}
+	});
+
+	it('textContent returns concatenated contents of decedent text nodes', () => {
+		const node = findFirst(root, '#universal-p1')!;
+		expect(textContent(node)).toStrictEqual('Universal selector tests inside element with id="universal".');
+	});
+
+	it('textContent returns concatenated contents of decedent text nodes (ignore comments)', () => {
+		const node = findFirst(root, '#pseudo-nth-p1')!;
+		expect(textContent(node)).toStrictEqual('span1em1em2span2strong1em3span3span4strong2em4');
 	});
 
 	it('converts to json', () => {

@@ -1,5 +1,5 @@
-import { Node } from '../types';
+import { ElementNode } from '../types';
 
-export function hasAttribute(node: Node, name: string) {
+export function hasAttribute(node: ElementNode, name: string) {
 	return node.attributes.some((attr) => attr.name === name);
 }

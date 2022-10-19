@@ -1,5 +1,5 @@
-import { Node } from '../types';
+import { ElementNode } from '../types';
 
-export function children(node: Node) {
+export function children(node: ElementNode) {
 	return [...node.children];
 }

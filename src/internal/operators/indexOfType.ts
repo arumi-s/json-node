@@ -1,7 +1,7 @@
-import { Node } from '../types';
+import { ElementNode } from '../types';
 import { siblings } from './siblings';
 
-export function indexOfType(node: Node): number {
+export function indexOfType(node: ElementNode): number {
 	return node.parent == null
 		? 0
 		: siblings(node)

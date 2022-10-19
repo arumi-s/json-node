@@ -1,7 +1,7 @@
-import { Node } from '../types';
-import { createNode } from '../constructors/createNode';
+import { ElementNode } from '../types';
+import { createElement } from '../constructors/createElement';
 import { copyAttr } from './copyAttr';
 
-export function copyNode(from: Node) {
-	return copyAttr(from, createNode(from.tagName));
+export function copyNode(from: ElementNode) {
+	return copyAttr(from, createElement(from.tagName));
 }

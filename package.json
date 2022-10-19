@@ -1,43 +1,43 @@
 {
 	"name": "json-node",
-	"version": "0.2.2",
+	"version": "0.3.0",
 	"description": "xml parser and selector",
 	"author": "Arumi Sakura",
 	"license": "MIT",
 	"readmeFilename": "README.md",
 	"sideEffects": false,
-	"main": "./cjs/index.js",
-	"module": "./esm5/index.js",
-	"es2015": "./esm/index.js",
-	"types": "./types/index.d.ts",
+	"main": "./dist/cjs/index.js",
+	"module": "./dist/esm5/index.js",
+	"es2015": "./dist/esm/index.js",
+	"types": "./dist/types/index.d.ts",
 	"exports": {
 		".": {
-			"types": "./types/index.d.ts",
-			"node": "./cjs/index.js",
-			"require": "./cjs/index.js",
-			"es2015": "./esm/index.js",
-			"default": "./esm/index.js"
+			"types": "./dist/types/index.d.ts",
+			"node": "./dist/cjs/index.js",
+			"require": "./dist/cjs/index.js",
+			"es2015": "./dist/esm/index.js",
+			"default": "./dist/esm/index.js"
 		},
 		"./parse-xml": {
-			"types": "./types/parse-xml/index.d.ts",
-			"node": "./cjs/parse-xml/index.js",
-			"require": "./cjs/parse-xml/index.js",
-			"es2015": "./esm/parse-xml/index.js",
-			"default": "./esm/parse-xml/index.js"
+			"types": "./dist/types/parse-xml/index.d.ts",
+			"node": "./dist/cjs/parse-xml/index.js",
+			"require": "./dist/cjs/parse-xml/index.js",
+			"es2015": "./dist/esm/parse-xml/index.js",
+			"default": "./dist/esm/parse-xml/index.js"
 		},
 		"./operators": {
-			"types": "./types/operators/index.d.ts",
-			"node": "./cjs/operators/index.js",
-			"require": "./cjs/operators/index.js",
-			"es2015": "./esm/operators/index.js",
-			"default": "./esm/operators/index.js"
+			"types": "./dist/types/operators/index.d.ts",
+			"node": "./dist/cjs/operators/index.js",
+			"require": "./dist/cjs/operators/index.js",
+			"es2015": "./dist/esm/operators/index.js",
+			"default": "./dist/esm/operators/index.js"
 		},
 		"./internal/*": {
-			"types": "./types/internal/*.d.ts",
-			"node": "./cjs/internal/*.js",
-			"require": "./cjs/internal/*.js",
-			"es2015": "./esm/internal/*.js",
-			"default": "./esm/internal/*.js"
+			"types": "./dist/types/internal/*.d.ts",
+			"node": "./dist/cjs/internal/*.js",
+			"require": "./dist/cjs/internal/*.js",
+			"es2015": "./dist/esm/internal/*.js",
+			"default": "./dist/esm/internal/*.js"
 		},
 		"./package.json": "./package.json"
 	},
@@ -51,8 +51,8 @@
 	"scripts": {
 		"build": "npm run build:cjs",
 		"build:clean": "rimraf dist",
-		"build:esm": "tsc --project tsconfig.prod.esm.json",
-		"build:esm5": "tsc --project tsconfig.prod.esm5.json",
+		"build:esm": "tsc --project tsconfig.prod.esm.json && tsc-esm-fix --tsconfig tsconfig.prod.esm.json",
+		"build:esm5": "tsc --project tsconfig.prod.esm5.json && tsc-esm-fix --tsconfig tsconfig.prod.esm5.json",
 		"build:esm-bundle": "rollup --config rollup.config.js",
 		"build:cjs": "tsc --project tsconfig.prod.cjs.json",
 		"build:umd": "rollup --config rollup.umd.config.js",
@@ -101,6 +101,21 @@
 		"rollup-plugin-typescript2": "^0.34.1",
 		"ts-jest": "^29.0.3",
 		"ts-node": "^10.9.1",
+		"tsc-esm-fix": "^2.20.5",
 		"typescript": "^4.8.4"
-	}
+	},
+	"files": [
+		"dist/cjs/**/!(*.tsbuildinfo)",
+		"dist/esm/**/!(*.tsbuildinfo)",
+		"dist/esm5/**/!(*.tsbuildinfo)",
+		"dist/types/**/!(*.tsbuildinfo)",
+		"dist/umd/**/!(*.tsbuildinfo)",
+		"parse-xml",
+		"operators",
+		"src",
+		"LICENSE.txt",
+		"package.json",
+		"README.md",
+		"tsconfig.json"
+	]
 }

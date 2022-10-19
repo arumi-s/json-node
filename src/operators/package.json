@@ -1,8 +1,8 @@
 {
 	"name": "json-node/operators",
-	"types": "../types/operators/index.d.ts",
-	"main": "../cjs/operators/index.js",
-	"module": "../esm5/operators/index.js",
-	"es2015": "../esm/operators/index.js",
+	"types": "../dist/types/operators/index.d.ts",
+	"main": "../dist/cjs/operators/index.js",
+	"module": "../dist/esm5/operators/index.js",
+	"es2015": "../dist/esm/operators/index.js",
 	"sideEffects": false
 }

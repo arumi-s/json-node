@@ -1,8 +1,8 @@
-import { Node } from '../types';
-import { isSelectableNode } from './isSelectableNode';
+import { ElementNode } from '../types';
+import { isSelectable } from './isSelectable';
 
-export function descendants(node: Node) {
-	const list: Node[] = [];
-	for (const child of node.children) if (isSelectableNode(child)) list.push(child, ...descendants(child));
+export function descendants(node: ElementNode) {
+	const list: ElementNode[] = [];
+	for (const child of node.children) if (isSelectable(child)) list.push(child, ...descendants(child));
 	return list;
 }

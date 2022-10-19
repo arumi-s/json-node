@@ -1,51 +1,31 @@
 import { decode, DecodingMode, EntityLevel } from 'entities';
-import { ParseXmlOptions, Node } from '../internal/types';
-import { appendChild } from '../internal/operators/appendChild';
-import { isNode } from '../internal/operators/isNode';
-
-interface XmlNode {
-	tagName: string;
-	attributes: XmlAttr[];
-	children: (XmlNode | string)[];
-	position?: number;
-}
-
-interface XmlAttr {
-	name: string;
-	value: string;
-}
-
-type XmlNodes = (XmlNode | string)[];
+import { ParseXmlOptions, ElementNode, Attr, AnyNode } from '../internal/types';
+import { _isElement } from '../internal/operators/_isElement';
+import { _isText } from '../internal/operators/_isText';
+import { createComment } from '../internal/constructors/createComment';
+import { createElement } from '../internal/constructors/createElement';
+import { createText } from '../internal/constructors/createText';
 
 const decodeXML = (str: string): string => decode(str, { level: EntityLevel.HTML, mode: DecodingMode.Strict });
 
-function toJsonNode(json: XmlNode): Node {
-	const node: Node = {
-		tagName: json.tagName ?? '',
-		attributes: json.attributes ?? [],
-		parent: null,
-		children: [],
-	};
-	if (json.children) {
-		json.children.forEach((child: any) => {
-			if (isNode(child)) {
-				const childNode = toJsonNode(child);
-				if (childNode) appendChild(node, childNode);
-			} else {
-				appendChild(node, child as string);
-			}
+function toJsonNode(node: ElementNode): ElementNode {
+	if (node.children) {
+		node.children.forEach((child) => {
+			if (_isElement(child)) child = toJsonNode(child);
+			child.parent = node;
 		});
 	}
 	return node;
 }
 
-const wrapXML = (tagName: string, children: XmlNodes): XmlNode => ({
+const wrapXML = (tagName: string, children: AnyNode[]): ElementNode => ({
 	tagName,
 	attributes: [],
+	parent: null,
 	children,
 });
 
-export const parseXML = (S: string, options?: ParseXmlOptions): Node => {
+export const parseXML = (S: string, options?: ParseXmlOptions): ElementNode => {
 	options = options || {};
 
 	let position = options.position || 0;
@@ -65,8 +45,8 @@ export const parseXML = (S: string, options?: ParseXmlOptions): Node => {
 	/**
 	 * parsing a list of entries
 	 */
-	const parseChildren = (tagName: string): XmlNodes => {
-		const children: XmlNodes = [];
+	const parseChildren = (tagName: string): AnyNode[] => {
+		const children: AnyNode[] = [];
 		while (S[position]) {
 			if (S.charCodeAt(position) === openBracketCC) {
 				if (S.charCodeAt(position + 1) === slashCC) {
@@ -105,7 +85,7 @@ export const parseXML = (S: string, options?: ParseXmlOptions): Node => {
 							position = S.length;
 						}
 						if (options?.keepComments === true) {
-							children.push(S.substring(startCommentPos, position + 1));
+							children.push(createComment(S.substring(startCommentPos, position + 1)));
 						}
 					} else if (
 						S.charCodeAt(position + 2) === openCornerBracketCC &&
@@ -115,10 +95,10 @@ export const parseXML = (S: string, options?: ParseXmlOptions): Node => {
 						// support cdata
 						const cdataEndIndex = S.indexOf(']]>', position);
 						if (cdataEndIndex === -1) {
-							children.push(S.substring(position + 9));
+							children.push(createText(S.substring(position + 9)));
 							position = S.length;
 						} else {
-							children.push(S.substring(position + 9, cdataEndIndex));
+							children.push(createText(S.substring(position + 9, cdataEndIndex)));
 							position = cdataEndIndex + 3;
 						}
 						continue;
@@ -135,11 +115,7 @@ export const parseXML = (S: string, options?: ParseXmlOptions): Node => {
 							}
 							position++;
 						}
-						children.push({
-							tagName: S.substring(startDoctype, position),
-							attributes: [],
-							children: [],
-						});
+						children.push(createElement(S.substring(startDoctype, position)));
 					}
 					position++;
 					continue;
@@ -156,7 +132,7 @@ export const parseXML = (S: string, options?: ParseXmlOptions): Node => {
 				}
 			} else {
 				const text = parseText();
-				if (text.trim().length > 0) children.push(text);
+				if (text.trim().length > 0) children.push(createText(text));
 				position++;
 			}
 		}
@@ -190,11 +166,11 @@ export const parseXML = (S: string, options?: ParseXmlOptions): Node => {
 	 */
 	const NoChildNodes = options.noChildNodes || [];
 
-	const parseNode = () => {
+	const parseNode = (): ElementNode => {
 		position++;
 		const tagName = parseName();
-		const attributes: XmlAttr[] = [];
-		let children: XmlNodes = [];
+		const attributes: Attr[] = [];
+		let children: AnyNode[] = [];
 
 		// parsing attributes
 		while (S.charCodeAt(position) !== closeBracketCC && S[position]) {
@@ -221,6 +197,7 @@ export const parseXML = (S: string, options?: ParseXmlOptions): Node => {
 						return {
 							tagName,
 							attributes,
+							parent: null,
 							children,
 						};
 					}
@@ -241,12 +218,12 @@ export const parseXML = (S: string, options?: ParseXmlOptions): Node => {
 			if (tagName === 'script') {
 				const start = position + 1;
 				position = S.indexOf('</script>', position);
-				children = [S.slice(start, position)];
+				children = [createText(S.slice(start, position))];
 				position += 9;
 			} else if (tagName === 'style') {
 				const start = position + 1;
 				position = S.indexOf('</style>', position);
-				children = [S.slice(start, position)];
+				children = [createText(S.slice(start, position))];
 				position += 8;
 			} else if (!NoChildNodes.includes(tagName)) {
 				position++;
@@ -257,10 +234,15 @@ export const parseXML = (S: string, options?: ParseXmlOptions): Node => {
 		} else {
 			position++;
 		}
-		children = children.map((child) => (typeof child === 'string' ? decodeXML(child) : child));
+		for (const child of children) {
+			if (_isText(child)) {
+				child.text = decodeXML(child.text);
+			}
+		}
 		return {
 			tagName,
 			attributes,
+			parent: null,
 			children,
 		};
 	};

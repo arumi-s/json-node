@@ -1,12 +1,12 @@
 import { getTestDoc } from './doc';
-import { Node, find, findFirst } from '../src';
+import { ElementNode, find, findFirst } from '../src';
 import { SelectorTest, invalidSelectors } from './selectors';
 
 function escapeRegex(text: string) {
 	return text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
-function runInvalidSelectorTest(name: string, root: Node, selectors: SelectorTest[]) {
+function runInvalidSelectorTest(name: string, root: ElementNode, selectors: SelectorTest[]) {
 	describe(`${name} invalid selectors`, () => {
 		for (let i = 0; i < selectors.length; i++) {
 			const s = selectors[i];

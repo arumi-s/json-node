@@ -1,4 +1,4 @@
-import { Checker, Node } from '../types';
+import { Checker, ElementNode } from '../types';
 import { childNodes } from '../operators/childNodes';
 import { getAttribute } from '../operators/getAttribute';
 import { hasAttribute } from '../operators/hasAttribute';
@@ -301,7 +301,7 @@ function chainCheckers(checkers: [number, Checker][]): Checker | null {
 	if (checkers.length === 1) return checkers[0][1];
 	return (node, scope) => {
 		if (!checkers[0][1](node, scope)) return false;
-		for (let index = 1, parent: Node | undefined = node; parent != null; index++) {
+		for (let index = 1, parent: ElementNode | undefined = node; parent != null; index++) {
 			const [type, check] = checkers[index];
 			if (parent.parent) {
 				if (type === TOKEN_SPACE) {

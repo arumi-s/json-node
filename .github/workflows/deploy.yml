@@ -22,13 +22,11 @@ jobs:
       - run: npm run build:esm-bundle
       - run: npm run build:umd
       - run: npm run build:types
-      - run: cp LICENSE dist/LICENSE
-      - run: cp README.md dist/README.md
-      - run: mkdir dist/operators
-      - run: mkdir dist/parse-xml
-      - run: cp src/operators/package.json dist/operators/package.json
-      - run: cp src/parse-xml/package.json dist/parse-xml/package.json
-      - run: jq 'del(.devDependencies) | del(.scripts)' package.json > dist/package.json
-      - run: npm publish ./dist
+      - run: mkdir operators
+      - run: mkdir parse-xml
+      - run: cp src/operators/package.json operators/package.json
+      - run: cp src/parse-xml/package.json parse-xml/package.json
+      - run: jq 'del(.devDependencies) | del(.scripts)' package.json > package.json
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,7 +1,7 @@
 import { parse } from './doc';
 import {
 	childNodes,
-	createNode,
+	createElement,
 	findFirst,
 	getAttribute,
 	insertAfter,
@@ -83,7 +83,7 @@ describe('JsonNode check manipulation', () => {
 		const newId = 'universal-insert1';
 		const parentNode = findFirst(doc, '#universal')!;
 		const refNode = findFirst(doc, '#universal-p2')!;
-		const newNode = createNode('div', { id: newId });
+		const newNode = createElement('div', { id: newId });
 
 		expect(childNodes(parentNode)).toHaveLength(5);
 		expect(findFirst(doc, `#${newId}`)).toBeUndefined();
@@ -152,7 +152,7 @@ describe('JsonNode check manipulation', () => {
 		const newId = 'universal-insert1';
 		const parentNode = findFirst(doc, '#universal')!;
 		const refNode = findFirst(doc, '#universal-p2')!;
-		const newNode = createNode('div', { id: newId });
+		const newNode = createElement('div', { id: newId });
 
 		expect(childNodes(parentNode)).toHaveLength(5);
 		expect(findFirst(doc, `#${newId}`)).toBeUndefined();

@@ -1,15 +1,10 @@
-import { Node } from '../types';
-import { _isNodeInternal } from './isNodeInternal';
+import { AnyNode, ElementNode } from '../types';
 import { removeChild } from './removeChild';
 
-export function appendChild(node: Node, child: Node | string) {
-	if (_isNodeInternal(child)) {
-		if (node !== child) {
-			if (child.parent) removeChild(child.parent, child);
-			child.parent = node;
-			node.children.push(child);
-		}
-	} else {
+export function appendChild(node: ElementNode, child: AnyNode) {
+	if (node !== child) {
+		if (child.parent) removeChild(child.parent, child);
+		child.parent = node;
 		node.children.push(child);
 	}
 }
