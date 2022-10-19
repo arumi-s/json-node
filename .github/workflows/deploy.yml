@@ -26,7 +26,6 @@ jobs:
       - run: mkdir parse-xml
       - run: cp src/operators/package.json operators/package.json
       - run: cp src/parse-xml/package.json parse-xml/package.json
-      - run: jq 'del(.devDependencies) | del(.scripts)' package.json > package.json
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
